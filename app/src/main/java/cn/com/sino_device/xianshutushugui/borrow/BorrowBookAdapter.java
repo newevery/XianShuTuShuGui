@@ -69,7 +69,7 @@ public class BorrowBookAdapter extends BaseAdapter {
             holder.tvState.setText("审核成功");
         }
         holder.tvAuditResult.setText(bookBorrow.getAuditResult());
-        return convertView;
+        return convertView       ;
     }
 
     /**
