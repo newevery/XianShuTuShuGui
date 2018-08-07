@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/book_title"
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dip"
+        android:layout_weight="0.6"
+        android:textSize="50px"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="10dip"
+        android:layout_weight="5"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/book_image"
+            android:layout_width="200dip"
+            android:layout_height="300dip"
+            android:layout_marginLeft="15dip" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="20dip"
+            android:layout_gravity="left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="40px" />
+
+            <TextView
+                android:id="@+id/book_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="40px" />
+
+            <TextView
+                android:id="@+id/book_pubdate"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="40px" />
+
+            <TextView
+                android:id="@+id/book_pages"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="40px" />
+
+            <TextView
+                android:id="@+id/book_price"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="40px" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginTop="10dip"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:text="图书简介："
+        android:textStyle="bold"
+        android:textSize="50px" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="10dip"
+        android:layout_weight="4">
+
+        <TextView
+            android:id="@+id/book_summary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dip"
+            android:textSize="40px" />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:background="#FFE6B180"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btn_cancleShare"
+            android:layout_width="0dip"
+            android:layout_weight="1.5"
+            android:text="取消分享"
+            android:background="@drawable/btn_bg_normal"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+        <Button
+            android:id="@+id/btn_freeShare"
+            android:layout_width="0dip"
+            android:layout_weight="1.5"
+            android:text="免费分享"
+            android:background="@drawable/btn_bg_normal"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+        <Button
+            android:id="@+id/btn_chargeShare"
+            android:layout_width="0dip"
+            android:layout_weight="1.5"
+            android:background="@drawable/btn_bg_normal"
+            android:text="收费分享"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>
