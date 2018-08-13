@@ -9,7 +9,7 @@ public class BookBorrow {
     private String createTime;
     private String type;
     private String state;
-private String userName;
+    private String userName;
 
     public String getUserName() {
         return userName;

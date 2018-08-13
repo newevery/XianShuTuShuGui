@@ -8,12 +8,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
@@ -44,11 +47,15 @@ import static android.app.Activity.RESULT_OK;
  */
 public class DonateFragment extends Fragment implements DonateContract.View {
     private static final String TAG = "DonateFragment";
-
+    private GestureDetector gesture; //手势识别
     private ImageButton scanBtn;
-    private ListView listView;
-    private List<LibraryBookBean> mDatas = new ArrayList<>();
-    private MyListAdapter mAdapter;
+    private ListView lvHavCheck, lvNotCheck;
+    private List<LibraryBookBean> HavChecklist = new ArrayList<>();
+    private MyListAdapter mHavAdapter;
+    private List<LibraryBookBean> NotChecklist = new ArrayList<>();
+    private MyListAdapter mNotAdapter;
+    private TextView tvNotCheck;
+    private TextView tvHavCheck;
 
     public DonateFragment() {
     }
@@ -57,6 +64,15 @@ public class DonateFragment extends Fragment implements DonateContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_donate_book, container, false);
+        //根据父窗体getActivity()为fragment设置手势识别
+        gesture = new GestureDetector(this.getActivity(), new MyOnGestureListener());
+        //为fragment添加OnTouchListener监听器
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);//返回手势识别触发的事件
+            }
+        });
 
         //donateBook // TODO: 18-7-17 需要获取当前用户的分享状态
 //        new WebSocketAsyncTask(new CallBack() {
@@ -85,28 +101,85 @@ public class DonateFragment extends Fragment implements DonateContract.View {
             startActivityForResult(new Intent(getActivity(), CaptureActivity.class), 0);//扫码获取ISBN病请求
 //            getBookInfo("9787114103117");//9787115403254  9787115414779 9787115226266 9787512423046  9787115145543。。9787114103117
         });
-        listView = view.findViewById(R.id.donate_havecheck_lv);
-        mAdapter = new MyListAdapter(getActivity(), mDatas);
-        mAdapter.notifyDataSetChanged();
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvHavCheck = view.findViewById(R.id.donate_havecheck_lv);
+        mHavAdapter = new MyListAdapter(getActivity(), HavChecklist);
+        lvHavCheck.setAdapter(mHavAdapter);
+        lvHavCheck.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);//返回手势识别触发的事件
+            }
+        });
+        lvNotCheck = view.findViewById(R.id.donate_notcheck_lv);
+        mNotAdapter = new MyListAdapter(getActivity(), NotChecklist);
+        lvNotCheck.setAdapter(mNotAdapter);
+        lvNotCheck.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);//返回手势识别触发的事件
+            }
+        });
+
+        lvHavCheck.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), BorrowDetailActivity.class);
-                intent.putExtra("bookId",mDatas.get(position).getId());
-                intent.putExtra("tag","2");
+                intent.putExtra("bookId", HavChecklist.get(position).getId());
+                intent.putExtra("tag", "2");
 //                intent.putExtra("ISBN","9787534255380");
                 getActivity().startActivity(intent);
             }
         });
+        tvNotCheck = view.findViewById(R.id.tv_donate_notcheck);
+        tvHavCheck = view.findViewById(R.id.tv_donate_havcheck);
+        tvNotCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvNotCheck.setVisibility(View.VISIBLE);
+                lvHavCheck.setVisibility(View.GONE);
+                tvNotCheck.setBackgroundColor(getResources().getColor(R.color.colorPeachPuff));
+                tvHavCheck.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            }
+        });
+        tvHavCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvNotCheck.setVisibility(View.GONE);
+                lvHavCheck.setVisibility(View.VISIBLE);
+                tvNotCheck.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                tvHavCheck.setBackgroundColor(getResources().getColor(R.color.colorPeachPuff));
+            }
+        });
+
+
         return view;
+    }
+
+    //设置手势识别监听器
+    private class MyOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override//此方法必须重写且返回真，否则onFling不起效
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if ((e1.getX() - e2.getX() > 120) && Math.abs(velocityX) > 200) {
+                tvHavCheck.performClick();
+                return true;
+            } else if ((e2.getX() - e1.getX() > 120) && Math.abs(velocityX) > 200) {
+                tvNotCheck.performClick();
+                return true;
+            }
+            return false;
+        }
     }
 
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    mAdapter.notifyDataSetChanged();
+                    mHavAdapter.notifyDataSetChanged();
                     break;
             }
             super.handleMessage(msg);
@@ -126,7 +199,7 @@ public class DonateFragment extends Fragment implements DonateContract.View {
                 if (result.isSuccess()) {
                     Log.i(TAG, result.getMsg());
                     for (int i = 0; i < JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).size(); i++) {
-                        mDatas.add(JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).get(i));
+                        HavChecklist.add(JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).get(i));
                     }
                     Message msg = new Message();
                     msg.what = 1;

@@ -18,9 +18,9 @@ public class WebSocketInstance implements CallBack {
     public static void wsConnect(String path, String object, CallBack callBack) {
         try {
             if (c == null || c.isClosed()) {
-                c = new MyWebSocketClient(new URI("ws://192.168.2.121:8080/jeeplus/syslibSocketServer"), new Draft_17());
+                c = new MyWebSocketClient(new URI("ws://118.24.160.41:8080/jeeplus/syslibSocketServer"), new Draft_17());
             }
-            c = new MyWebSocketClient(new URI("ws://192.168.2.121:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
+            c = new MyWebSocketClient(new URI("ws://118.24.160.41:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
             c.connectBlocking();
 
             StringBuffer sb = new StringBuffer(object);

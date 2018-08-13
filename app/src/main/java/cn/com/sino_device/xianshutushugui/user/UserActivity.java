@@ -1,6 +1,7 @@
 package cn.com.sino_device.xianshutushugui.user;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,8 +11,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.io.File;
+
 import cn.com.sino_device.xianshutushugui.R;
 import cn.com.sino_device.xianshutushugui.bean.user.ResultGetUserInfo;
+import cn.com.sino_device.xianshutushugui.user.edit.EditUserinfoActivity;
 import cn.com.sino_device.xianshutushugui.util.SPUtils;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -63,17 +67,18 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         tvEditInfo.setOnClickListener(this);
         civAvatar = findViewById(R.id.civ_avatar);
         civAvatar.setOnClickListener(this);
+        civAvatar.setImageURI(Uri.fromFile(new File(getFilesDir(), "avatar_current.jpg")));
         tvNickname = findViewById(R.id.tv_nickname);
         ivSex = findViewById(R.id.iv_sex);
         tvAbstract = findViewById(R.id.tv_abstract);
         String currentUserinfo = SPUtils.get(this, "CURRENT_USERINFO", "").toString();
-        if (!currentUserinfo.equals("")) {
+        if (!"".equals(currentUserinfo)) {
             Gson gson = new Gson();
             ResultGetUserInfo resultGetUserInfo = gson.fromJson(currentUserinfo, ResultGetUserInfo.class);
             tvNickname.setText(resultGetUserInfo.getName());
-            if (resultGetUserInfo.getSex().equals("男")) {
+            if ("男".equals(resultGetUserInfo.getSex())) {
                 ivSex.setImageResource(R.drawable.ic_boy);
-            }else {
+            } else {
                 ivSex.setImageResource(R.drawable.ic_girl);
             }
 

@@ -12,17 +12,19 @@ import cn.com.sino_device.xianshutushugui.BaseView;
 public interface GetUserInfoContract {
 
     /**
-     * 用户密码修改 View
+     * 获取用户信息 View
      */
     interface GetUserInfoView extends BaseView<GetUserInfoPresenter> {
         void showGetUserInfo(Object object);
+        void showGetUserAvatar(Object object);
     }
 
 
     /**
-     * 用户注册 Presenter
+     * 获取用户信息 Presenter
      */
     interface GetUserInfoPresenter extends BasePresenter {
         void getUserInfo(Object object);
+        void getUserAvatar(Object object);
     }
 }

@@ -1,6 +1,7 @@
 package cn.com.sino_device.xianshutushugui.giveback;
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,11 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +37,13 @@ import cn.com.sino_device.xianshutushugui.bean.book.LibraryBookBean;
 import cn.com.sino_device.xianshutushugui.bean.user.Result;
 import cn.com.sino_device.xianshutushugui.borrow.BorrowDetailActivity;
 import cn.com.sino_device.xianshutushugui.library.MyListAdapter;
+import cn.com.sino_device.xianshutushugui.util.StringUtil;
 
 
 /**
  * @author affe
  */
-public class GivebackFragment extends Fragment implements View.OnClickListener, GivebackContract.View, GivebackBookAdapter.CheckInterface {
+public class GivebackFragment extends Fragment implements GivebackContract.View, GivebackBookAdapter.CheckInterface {
     private static final String TAG = "GivebackFragment";
 
     private List<String> bookIds = new ArrayList<>();
@@ -61,7 +69,7 @@ public class GivebackFragment extends Fragment implements View.OnClickListener, 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), BorrowDetailActivity.class);
                 intent.putExtra("bookId", mDatas.get(position).getId());
-                intent.putExtra("tag", "4");
+                intent.putExtra("tag", "5");
                 getActivity().startActivity(intent);
             }
         });
@@ -93,10 +101,103 @@ public class GivebackFragment extends Fragment implements View.OnClickListener, 
 
 
         });
+        CheckBox ckAll = view.findViewById(R.id.ck_all);
+        ckAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ckAll.isChecked()) {
+                    for (int i = 0; i < mDatas.size(); i++) {
+                        ((View) getViewByPosition(i, listView)).setBackgroundColor(getResources().getColor(R.color.colorGainsboro));
+                        stateMap.put(i, true);
+                        if (!bookIds.contains(mDatas.get(i).getId())) {
+                            bookIds.add(mDatas.get(i).getId());
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < mDatas.size(); i++) {
+                        ((View) getViewByPosition(i, listView)).setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                        stateMap.put(i, false);
+                        bookIds.clear();
+                    }
+                }
+            }
+        });
+        TextView tv_day=view.findViewById(R.id.tv_borrow_day);
+        tv_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        tv_day.setText("预约"+year + "-" + (monthOfYear + 1) + "-" + dayOfMonth+"还书");
+                    }
+                }, year, month, day);
+                dialog.getDatePicker().setMinDate(new Date().getTime());
+                dialog.show();
+            }
+        });
+        Button btnSubmit = view.findViewById(R.id.tv_submit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String s = bookIds.toString();
+                s = s.replace("[", "").replace("]", "");
+
+                if ("".equals(s)) {
+                    Toast.makeText(getActivity(), "当前未选择图书", Toast.LENGTH_LONG).show();
+                } else if (tv_day.getText().toString() == null || "".equals(tv_day.getText().toString())) {
+                    Toast.makeText(getActivity(), "请输入借阅天数", Toast.LENGTH_LONG).show();
+                } else {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("bookId", s);
+                    map.put("number", bookIds.size() + "");
+                    map.put("orderTime", tv_day.getText().toString());
+                    map.put("createTime", StringUtil.getDate(new Date(), "yyyy-MM-dd"));
+                    map.put("type", "1");
+
+                    new WebSocketAsyncTask(new CallBack() {
+                        @Override
+                        public void onSuccess(String message) {
+                            Gson gson = new Gson();
+                            Result result = gson.fromJson(message, Result.class);
+                            if (result.isSuccess()) {
+                                Log.i(TAG, result.getMsg());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity(), result.getMsg(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", JsonUtil.mapToJson(map));
+                }
+            }
+        });
         return view;
     }
 
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
     private void initView(View view) {
 
 //        ///btnBack = view.findViewById(R.id.btn_back);
@@ -182,31 +283,6 @@ public class GivebackFragment extends Fragment implements View.OnClickListener, 
 //        givebackBookAdapter.setCheckInterface(this);
 //        lvBorrowBook.setAdapter(givebackBookAdapter);
 //        givebackBookAdapter.setBorrowBookList(borrowBookList);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            //全选按钮
-            case R.id.ck_all:
-//                if (borrowBookList.size() != 0) {
-//                    if (ckAll.isChecked()) {
-//                        for (int i = 0; i < borrowBookList.size(); i++) {
-//                            borrowBookList.get(i).setChoosed(true);
-//                        }
-//                        givebackBookAdapter.notifyDataSetChanged();
-//                    } else {
-//                        for (int i = 0; i < borrowBookList.size(); i++) {
-//                            borrowBookList.get(i).setChoosed(false);
-//                        }
-//                        givebackBookAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//                statistics();
-                break;
-            default:
-                break;
-        }
     }
 
     /**

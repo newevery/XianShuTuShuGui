@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
     <SurfaceView
         android:id="@+id/capture_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/capture_container"
@@ -18,9 +18,16 @@
         <ImageView
             android:id="@+id/capture_mask_top"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_alignParentTop="true"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow" />
+
+        <TextView
+            android:layout_alignBottom="@+id/capture_mask_top"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="请扫描图书背面ISBN条码" />
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"
@@ -37,7 +44,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/scan_line"/>
+                android:src="@drawable/scan_line" />
 
         </RelativeLayout>
 
@@ -47,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/capture_crop_view"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow" />
 
         <ImageView
             android:id="@+id/capture_mask_left"
@@ -57,7 +64,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toLeftOf="@id/capture_crop_view"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow" />
 
         <ImageView
             android:id="@+id/capture_mask_right"
@@ -67,7 +74,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toRightOf="@id/capture_crop_view"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow" />
     </RelativeLayout>
 
 </RelativeLayout>

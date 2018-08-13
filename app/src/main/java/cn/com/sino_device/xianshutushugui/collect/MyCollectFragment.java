@@ -1,6 +1,6 @@
 package cn.com.sino_device.xianshutushugui.collect;
 
-
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,14 +14,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,7 @@ public class MyCollectFragment extends Fragment {
     private CollectBookAdapter myAdapter;
     private ListView listView;
     private List<String> bookIds = new ArrayList<>();
+    ;
     private Map<Integer, Boolean> stateMap = new HashMap<>();
 
     public MyCollectFragment() {
@@ -67,7 +71,7 @@ public class MyCollectFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), BorrowDetailActivity.class);
                 intent.putExtra("bookId", mDatas.get(position).getBookId());
-                intent.putExtra("tag", "3");
+                intent.putExtra("tag", "4");
                 getActivity().startActivity(intent);
             }
         });
@@ -116,7 +120,24 @@ public class MyCollectFragment extends Fragment {
                 }
             }
         });
-        EditText et_day = view.findViewById(R.id.tv_borrow_day);
+        TextView tv_day = view.findViewById(R.id.tv_borrow_day);
+        tv_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        tv_day.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                    }
+                }, year, month, day);
+                dialog.getDatePicker().setMinDate(new Date().getTime());
+                dialog.show();
+            }
+        });
         Button btnSubmit = view.findViewById(R.id.tv_submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,15 +148,15 @@ public class MyCollectFragment extends Fragment {
 
                 if ("".equals(s)) {
                     Toast.makeText(getActivity(), "当前未选择图书", Toast.LENGTH_LONG).show();
-                } else if (et_day.getText().toString() == null || "".equals(et_day.getText().toString())){
+                } else if (tv_day.getText().toString() == null || "".equals(tv_day.getText().toString())) {
                     Toast.makeText(getActivity(), "请输入借阅天数", Toast.LENGTH_LONG).show();
                 } else {
-                    Map<String,String> map=new HashMap<>();
-                    map.put("bookId",s);
-                    map.put("number",bookIds.size()+"");
-                    map.put("orderTime",et_day.getText().toString());
-                    map.put("createTime", StringUtil.getDate(new Date(),"yyyy-MM-dd"));
-                    map.put("type","0");
+                    Map<String, String> map = new HashMap<>();
+                    map.put("bookId", s);
+                    map.put("number", bookIds.size() + "");
+                    map.put("orderTime", tv_day.getText().toString());
+                    map.put("createTime", StringUtil.getDate(new Date(), "yyyy-MM-dd"));
+                    map.put("type", "0");
 
                     new WebSocketAsyncTask(new CallBack() {
                         @Override
@@ -144,6 +165,12 @@ public class MyCollectFragment extends Fragment {
                             Result result = gson.fromJson(message, Result.class);
                             if (result.isSuccess()) {
                                 Log.i(TAG, result.getMsg());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity(), result.getMsg(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                         }
 

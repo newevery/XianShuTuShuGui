@@ -4,7 +4,6 @@ package cn.com.sino_device.xianshutushugui.setting;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,14 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import cn.com.sino_device.xianshutushugui.R;
+import cn.com.sino_device.xianshutushugui.setting.mobile.MobileFragment;
+import cn.com.sino_device.xianshutushugui.setting.password.SecurityCheckFragment;
 import cn.com.sino_device.xianshutushugui.util.ActivityUtils;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 账号与安全
+ *
+ * @author affe
  */
 public class AccountSecurityFragment extends Fragment implements View.OnClickListener {
 
@@ -62,15 +65,18 @@ public class AccountSecurityFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        // FragmentManager
+        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
         switch (v.getId()) {
             case R.id.ib_go_back:
                 this.getActivity().finish();
                 break;
             case R.id.rl_mobile:
+                MobileFragment mobileFragment = new MobileFragment();
+                ActivityUtils.replaceFragmentIntoActivity(fragmentManager, mobileFragment, R.id.contentFrame);
                 break;
             case R.id.rl_password:
                 SecurityCheckFragment securityCheckFragment = new SecurityCheckFragment();
-                FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
                 ActivityUtils.replaceFragmentIntoActivity(fragmentManager, securityCheckFragment, R.id.contentFrame);
                 break;
             default:

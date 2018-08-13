@@ -62,20 +62,28 @@ public class MyListAdapter extends BaseAdapter {
 //        Glide.with(context).load(libraryBookBeanList.get(position).getImages()).into(holder.image);
         holder.title.setText(libraryBookBeanList.get(position).getName());
         holder.author.setText(libraryBookBeanList.get(position).getAuthor());
-        holder.publisher.setText(libraryBookBeanList.get(position).getType());
+        holder.publisher.setText(libraryBookBeanList.get(position).getPublisher());
+        holder.pubdate.setText("出版时间： "+libraryBookBeanList.get(position).getPubdate());
+        holder.pages.setText("页码： "+libraryBookBeanList.get(position).getPages());
+        holder.level.setText(libraryBookBeanList.get(position).getLevel());
+        holder.price.setText("定价： "+libraryBookBeanList.get(position).getPrice());
 
         return convertView;
     }
 
     private class ViewHolder {
         ImageView image;
-        TextView title, author, publisher;
+        TextView title, author, publisher, pubdate, pages, level, price;
 
         public ViewHolder(View itemView) {
             image = itemView.findViewById(R.id.bookimage);
             title = itemView.findViewById(R.id.title);
             author = itemView.findViewById(R.id.author);
             publisher = itemView.findViewById(R.id.publisher);
+            pubdate = itemView.findViewById(R.id.pubdate);
+            pages = itemView.findViewById(R.id.pages);
+            level = itemView.findViewById(R.id.level);
+            price = itemView.findViewById(R.id.price);
 
         }
     }

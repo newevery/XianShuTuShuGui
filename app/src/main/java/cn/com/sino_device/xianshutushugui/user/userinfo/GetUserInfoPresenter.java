@@ -39,6 +39,22 @@ public class GetUserInfoPresenter implements GetUserInfoContract.GetUserInfoPres
     }
 
     @Override
+    public void getUserAvatar(Object object) {
+        userInfoSource.getUserAvatar((String) object, new GetUserInfoSource.GetUserInfoCallback() {
+            @Override
+            public void onSuccess(Object success) {
+                userInfoView.showGetUserAvatar(success);
+            }
+
+            @Override
+            public void onError(Object error) {
+                userInfoView.showGetUserAvatar(error);
+            }
+        });
+    }
+
+
+    @Override
     public void start() {
 
     }

@@ -21,6 +21,10 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +37,7 @@ import cn.com.sino_device.xianshutushugui.WebSocket.WebSocketAsyncTask;
 import cn.com.sino_device.xianshutushugui.bean.book.LibraryBookBean;
 import cn.com.sino_device.xianshutushugui.bean.user.Result;
 import cn.com.sino_device.xianshutushugui.borrow.BorrowDetailActivity;
+import cn.com.sino_device.xianshutushugui.util.MessageEvent;
 
 
 public class LibraryListFragment extends Fragment {
@@ -61,6 +66,7 @@ public class LibraryListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_library_list, container, false);
+        EventBus.getDefault().register(this);
         mPullRefreshListView = (PullToRefreshListView) view.findViewById(R.id.pull_refresh_list);
         mPullRefreshListView.setHasPullUpFriction(false); // 设置没有上拉阻力
         mPullRefreshListView.setHasPullDownFriction(false);
@@ -92,7 +98,7 @@ public class LibraryListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), BorrowDetailActivity.class);
-                intent.putExtra("bookId",mDatas.get(position).getId());
+                intent.putExtra("bookId",mDatas.get(position-1).getId());
                 intent.putExtra("tag","1");
 //                intent.putExtra("ISBN","9787534255380");
                  getActivity().startActivity(intent);
@@ -114,13 +120,50 @@ public class LibraryListFragment extends Fragment {
                 curPage += 1;
                 Log.i(TAG, curPage + "");
                 getbooks(curPage + "");
-                // Call onRefreshComplete when the list has been refreshed.
-//                mPullRefreshListView.onRefreshComplete();
             }
         });
-        getbooks("1");
+
 
         return view;
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        mDatas.clear();
+        Map<String, String> map = new HashMap();
+        map.put("name", messageEvent.getMessage());
+        map.put("author", messageEvent.getMessage());
+        map.put("introduction", messageEvent.getMessage());
+        map.put("booktype", "");
+//        map.put("bookstate", "2");
+
+        Log.i(TAG, "准备获取Book");
+
+        new WebSocketAsyncTask(new CallBack() {
+            @Override
+            public void onSuccess(String message) {
+                Gson gson = new Gson();
+                Result result = gson.fromJson(message, Result.class);
+                if (result.isSuccess()) {
+                    Log.i(TAG, result.getMsg());
+                    for (int i = 0; i < JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).size(); i++) {
+                        mDatas.add(JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).get(i));
+                    }
+                    Message msg = new Message();
+                    msg.what = 2;
+                    myHandler.sendMessage(msg);
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPhoneBooks", JsonUtil.mapToJson(map));
+
+
+
+
     }
 
     @Override
@@ -135,32 +178,16 @@ public class LibraryListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             Log.i(TAG,"页面前台展示");
+            mDatas.clear();
             getbooks("1");
+            curPage=1;
         }
     }
-    private void initData() {
-
-//        mDatas=getbooks(curPage + "");
-//        Bundle bundle = getArguments();
-//        newsType = bundle.getInt(NEWS_TYPE, Constant.NEWS_TYPE_YEJIE);
-//        mAdapter = new LibraryBookListAdapter(mContext);
-//        mDatas = new ArrayList<>();
-//        LibraryBookBean libraryBookBean = new LibraryBookBean();
-//        libraryBookBean.setAuthor("sssssss ");
-//        libraryBookBean.setCost(11.00);
-//        libraryBookBean.setName("qqqqqqq");
-//        libraryBookBean.setPhoto2("https://img3.doubanio.com/view/subject/m/public/s8914925.jpg");
-//        libraryBookBean.setPublisher("qqqqqqqqqqqqq");
-//        mDatas.add(libraryBookBean);
-//        mDatas.add(libraryBookBean);
-//        mDatas.add(libraryBookBean);
-//        mDatas.add(libraryBookBean);
-//        mDatas.add(libraryBookBean);
-//        mAdapter.setDatas(mDatas);
-    }
-
     // TODO: 18-7-17 获取当前类目下面的图书
     private List<LibraryBookBean> getbooks(String page) {
+        if ("1".equals(page)){
+            mDatas.clear();
+        }
         Map<String, String> map = new HashMap();
 //        map.put("type", postion + "");
 //        map.put("type", "");
@@ -169,29 +196,6 @@ public class LibraryListFragment extends Fragment {
         map.put("limit", page);
 
         Log.i(TAG, "准备获取Book");
-
-
-//        WebSocketInstance.wsConnect("getPhoneBooks", JsonUtil.mapToJson(map), new CallBack() {
-//            @Override
-//            public void onSuccess(String message) {
-//                Gson gson = new Gson();
-//                Result result = gson.fromJson(message, Result.class);
-//                if (result.isSuccess()) {
-//                    Log.i(TAG, result.getMsg());
-//                    for (int i = 0; i < JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).size(); i++) {
-//                        mDatas.add(JsonUtil.jsonToArrayList(result.getMsg(), LibraryBookBean.class).get(i));
-//                    }
-//                    System.out.println(curPage + "-------" + mDatas.size());
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//
-//            }
-//        });
-
 
         new WebSocketAsyncTask(new CallBack() {
             @Override
@@ -227,9 +231,20 @@ public class LibraryListFragment extends Fragment {
                     mAdapter.notifyDataSetChanged();
                     mPullRefreshListView.onRefreshComplete();
                     break;
+                case 2:
+                    mAdapter.notifyDataSetChanged();
+                    mPullRefreshListView.onRefreshComplete();
+                    break;
             }
             super.handleMessage(msg);
         }
     };
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

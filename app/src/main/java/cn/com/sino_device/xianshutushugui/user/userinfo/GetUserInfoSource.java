@@ -28,10 +28,18 @@ public interface GetUserInfoSource {
 
     /**
      * 获取用户信息
+     *
      * @param getUserInfo
      * @param userInfoCallback
      */
     void getUserInfo(GetUserInfo getUserInfo, GetUserInfoCallback userInfoCallback);
+
+    /**
+     * 获取用户头像
+     * @param url
+     * @param userInfoCallback
+     */
+    void getUserAvatar(String url, GetUserInfoCallback userInfoCallback);
 
 
 }

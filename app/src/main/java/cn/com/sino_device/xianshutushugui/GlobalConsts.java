@@ -35,5 +35,21 @@ public class GlobalConsts {
      */
     public static final String ERROR_CODE_SUCCESS = "0";
 
+    /**
+     * 组织机构类型
+     */
+    public static final String ORGANIZATION_TYPE_SCHOOL = "1";
+    public static final String ORGANIZATION_TYPE_OFFICE = "2";
+    public static final String ORGANIZATION_TYPE_GRADE = "3";
+    public static final String ORGANIZATION_TYPE_CLAZZ = "4";
+
+    /**
+     * 微信开放平台 APP_ID
+     */
+    public static final String OPEN_WECHAT_APP_ID = "wx302443bf2da7b5ab";
+    /**
+     * 微信开放平台 SECRET
+     */
+    public static final String OPEN_WECHAT_SECRET = "26305f7a5c78d7b3bf722e321c25946a";
 
 }

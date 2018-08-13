@@ -13,6 +13,14 @@
     <!-- 写入存储 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- begin: 微信开放平台 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- end: 微信开放平台 -->
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -31,23 +39,33 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- begin: 微信开放平台 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+        </activity>
+        <!-- end: 微信开放平台 -->
+
         <activity
             android:name=".GuideActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".user.signin.SignInActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <!--<activity-->
+            <!--android:name="SignUpActivityBAKSm"-->
+            <!--android:configChanges="orientation|screenSize"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:windowSoftInputMode="adjustPan|stateHidden" />-->
         <activity
-            android:name=".user.SignUpActivityBAKSMS"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".user.sign.in.SignInActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden">
@@ -58,7 +76,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".user.MsgSignInActivity"
+            android:name=".user.sign.msg.MsgSignInActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -68,12 +86,7 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".user.UserPwdActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".user.EditUserinfoActivity"
+            android:name=".user.edit.EditUserinfoActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -88,7 +101,7 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".user.signup.SignUpActivity"
+            android:name=".user.sign.up.SignUpActivity"
             android:configChanges="orientation|screenSize">
 
         </activity>
@@ -101,7 +114,7 @@
             android:configChanges="orientation|screenSize">
 
         </activity>
-        <activity android:name=".TestActivity">
+        <activity android:name=".test.TestActivity">
 
         </activity>
     </application>

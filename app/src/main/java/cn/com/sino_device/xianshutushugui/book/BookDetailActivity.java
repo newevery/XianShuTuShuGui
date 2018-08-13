@@ -230,49 +230,51 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
                 break;
             case R.id.btn_freeShare:
-                    //图书类目选择
-//                final String[] Catelogs = new String[]{"马列主义、毛泽东思想、邓小平理论",
-//                        "哲学、宗教", "社会科学总论", "政治、法律", "军事", "经济",
-//                        "文化、科学、教育、体育", "语言、文字", "文学", "艺术", "历史、地理",
-//                        "自然科学总论", "数理科学和化学", "天文学、地球科学", "生物科学",
-//                        "医药、卫生", "农业科学", "工业技术", "交通运输", "航空、航天",
-//                        "环境科学、劳动保护科学（安全科学）", "综合性图书"};
-//                AlertDialog alertDialog = new AlertDialog.Builder(this)
-//                        .setTitle("选择图书分类")
-//                        .setIcon(R.mipmap.ic_launcher)
-//                        .setItems(Catelogs, new DialogInterface.OnClickListener() {//添加列表
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                Toast.makeText(BookDetailActivity.this, "：" + Catelogs[i], Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .create();
-//                alertDialog.show();
-                Map<String, String> map = new HashMap<>();
-                map.put("bookId", bookId + "");
-                map.put("price", book.getPrice());
-                map.put("type", "1");
-                map.put("cost", "");
-                map.put("typeId","1");
-                new WebSocketAsyncTask(new CallBack() {
-                    @Override
-                    public void onSuccess(String message) {
-                        Gson gson = new Gson();
-                        Result result = gson.fromJson(message, Result.class);
-                        if (result.isSuccess()) {
-                            Log.i(TAG, result.getMsg());
+//                    图书类目选择
+
+                final String[] Catelogs = new String[]{"马列主义、毛泽东思想、邓小平理论",
+                        "哲学、宗教", "社会科学总论", "政治、法律", "军事", "经济",
+                        "文化、科学、教育、体育", "语言、文字", "文学", "艺术", "历史、地理",
+                        "自然科学总论", "数理科学和化学", "天文学、地球科学", "生物科学",
+                        "医药、卫生", "农业科学", "工业技术", "交通运输", "航空、航天",
+                        "环境科学、劳动保护科学（安全科学）", "综合性图书"};
+                AlertDialog alertDialog = new AlertDialog.Builder(this)
+                        .setTitle("选择图书分类")
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setItems(Catelogs, new DialogInterface.OnClickListener() {//添加列表
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(BookDetailActivity.this, "：" + Catelogs[i], Toast.LENGTH_SHORT).show();
+                                Map<String, String> map = new HashMap<>();
+                                map.put("bookId", bookId + "");
+                                map.put("price", book.getPrice());
+                                map.put("type", "1");
+                                map.put("cost", "");
+                                map.put("booktype",i+"");
+                                new WebSocketAsyncTask(new CallBack() {
+                                    @Override
+                                    public void onSuccess(String message) {
+                                        Gson gson = new Gson();
+                                        Result result = gson.fromJson(message, Result.class);
+                                        if (result.isSuccess()) {
+                                            Log.i(TAG, result.getMsg());
 //                                System.out.println(result.getMsg());
 
-                        }
-                    }
+                                        }
+                                    }
 
-                    @Override
-                    public void onError(String error) {
+                                    @Override
+                                    public void onError(String error) {
 
-                    }
-                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "donateBook", JsonUtil.mapToJson(map));
+                                    }
+                                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "donateBook", JsonUtil.mapToJson(map));
 
-                BookDetailActivity.this.finish();
+                                BookDetailActivity.this.finish();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+
                 break;
             default:
                 break;

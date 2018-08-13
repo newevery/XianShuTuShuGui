@@ -43,15 +43,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/colorBlack" />
 
-        <EditText
+        <TextView
             android:id="@+id/tv_borrow_day"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:clickable="true"
             android:inputType="number"
             android:padding="5dp"
-            android:hint="请输入天数"
+            android:hint="请选择天数"
             android:textColor="@color/colorBlack" />
 
         <Button

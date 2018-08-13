@@ -3,6 +3,7 @@ package cn.com.sino_device.xianshutushugui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -25,8 +26,13 @@ import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import cn.com.sino_device.xianshutushugui.base.BaseActivity;
 import cn.com.sino_device.xianshutushugui.bean.user.GetUserInfo;
 import cn.com.sino_device.xianshutushugui.bean.user.Result;
 import cn.com.sino_device.xianshutushugui.bean.user.ResultGetUserInfo;
@@ -36,13 +42,17 @@ import cn.com.sino_device.xianshutushugui.donate.DonateFragment;
 import cn.com.sino_device.xianshutushugui.giveback.GivebackFragment;
 import cn.com.sino_device.xianshutushugui.library.LibraryFragment;
 import cn.com.sino_device.xianshutushugui.setting.SettingActivity;
+import cn.com.sino_device.xianshutushugui.test.TestActivity;
 import cn.com.sino_device.xianshutushugui.ui.BottomNavigationViewHelper;
 import cn.com.sino_device.xianshutushugui.ui.DisableScrollbleViewPager;
 import cn.com.sino_device.xianshutushugui.user.UserActivity;
 import cn.com.sino_device.xianshutushugui.user.userinfo.GetUserInfoContract;
 import cn.com.sino_device.xianshutushugui.user.userinfo.GetUserInfoPresenter;
 import cn.com.sino_device.xianshutushugui.util.Base64BitmapUtil;
+import cn.com.sino_device.xianshutushugui.util.FileUtils;
 import cn.com.sino_device.xianshutushugui.util.SPUtils;
+import cn.com.sino_device.xianshutushugui.wxapi.bean.WeChatUserInfo;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static cn.com.sino_device.xianshutushugui.GlobalConsts.ERROR_CODE_SUCCESS;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -51,7 +61,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author affe
  */
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GetUserInfoContract.GetUserInfoView {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GetUserInfoContract.GetUserInfoView {
     private static final String TAG = "MainActivity";
 
     /**
@@ -62,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 抽屉导航
      */
     private NavigationView drawerNavigationView;
-    private ImageView ivAvatar;
+    private CircleImageView civAvatar;
     private TextView tvName;
 
     /**
@@ -114,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GetUserInfoPresenter mGetUserInfoPresenter;
     private GetUserInfoContract.GetUserInfoPresenter mPresenter;
     private GetUserInfo getUserInfo;
+    private ResultGetUserInfo resultGetUserInfo;
 
 
     @Override
@@ -131,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerNavigationView.setNavigationItemSelectedListener(this);
         // 获取抽屉headerLayout
         View headerView = drawerNavigationView.getHeaderView(0);
-        ivAvatar = headerView.findViewById(R.id.iv_avatar);
-        ivAvatar.setOnClickListener(this);
+        civAvatar = headerView.findViewById(R.id.civ_avatar);
+        civAvatar.setOnClickListener(this);
         tvName = headerView.findViewById(R.id.tv_nickname);
 
         // 底部导航菜单
@@ -168,11 +179,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initPermission();
 
         mGetUserInfoPresenter = new GetUserInfoPresenter(this);
-        String mobile = SPUtils.get(this, "CURRENT_USER", "").toString();
-        if (!"".equals(mobile)) {
-            GetUserInfo getUserInfo = new GetUserInfo();
-            getUserInfo.setMobile(mobile);
+
+        getUserInfo = new GetUserInfo();
+        Intent intent = getIntent();
+        if (intent.getSerializableExtra("WeChatUserInfo") != null) {
+            // TODO
+            // 微信登录
+            WeChatUserInfo userInfo = (WeChatUserInfo) intent.getSerializableExtra("WeChatUserInfo");
+            getUserInfo.setMobile(userInfo.getUnionid());
             mPresenter.getUserInfo(getUserInfo);
+        } else {
+            // 手机号登录
+            String mobile = SPUtils.get(this, "CURRENT_USER", "").toString();
+            if (!"".equals(mobile)) {
+                getUserInfo.setMobile(mobile);
+                mPresenter.getUserInfo(getUserInfo);
+            }
         }
 
     }
@@ -205,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_avatar:
+            case R.id.civ_avatar:
                 Intent intent = new Intent(MainActivity.this, UserActivity.class);
                 startActivity(intent);
                 break;
@@ -253,18 +275,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // 取出 result 中的 msg，转换成 ResultGetUserInfo
                 String msg = result.getMsg();
                 msg = msg.replace("\\", "");
+                Log.i(TAG, msg);
                 Gson gson = new Gson();
-                ResultGetUserInfo resultGetUserInfo = gson.fromJson(msg, ResultGetUserInfo.class);
-                // TODO 待修改
+                resultGetUserInfo = gson.fromJson(msg, ResultGetUserInfo.class);
+
+                // TODO
+                SPUtils.remove(this,"CURRENT_USERINFO");
                 SPUtils.put(this, "CURRENT_USERINFO", msg);
                 //
-                ///Base64BitmapUtil.base64ToBitmap(resultGetUserInfo.getPhoto());
-                ivAvatar.setImageBitmap(Base64BitmapUtil.base64ToBitmap(resultGetUserInfo.getPhoto()));
                 tvName.setText(resultGetUserInfo.getName());
+                if (!"".equals(resultGetUserInfo.getPhoto())) {
+                    Bitmap bitmap = Base64BitmapUtil.base64ToBitmap(resultGetUserInfo.getPhoto());
+                    civAvatar.setImageBitmap(bitmap);
+                    saveAvatarImage(bitmap);
+                }
+                /// mPresenter.getUserAvatar(resultGetUserInfo.getPhoto());
 
-                ///Looper.prepare();
-                ///Toast.makeText(MainActivity.this, resultGetUserInfo.toString(), Toast.LENGTH_SHORT).show();
-                ///Looper.loop();
+                Looper.prepare();
+                Toast.makeText(MainActivity.this, resultGetUserInfo.getClasses(), Toast.LENGTH_LONG).show();
+                Looper.loop();
             } else {
                 //
                 Looper.prepare();
@@ -280,7 +309,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void showGetUserAvatar(Object object) {
+        Log.i(TAG, object.toString());
+        if (object.getClass() == Bitmap.class) {
+            civAvatar.setImageBitmap((Bitmap) object);
+            saveAvatarImage((Bitmap) object);
+        }
+    }
+
+    @Override
     public void setPresenter(GetUserInfoContract.GetUserInfoPresenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+
+    /**
+     * 保存头像
+     *
+     * @param bitmap
+     * @return
+     */
+    private String saveAvatarImage(Bitmap bitmap) {
+        File avatar = new File(getFilesDir(), "avatar_current.jpg");
+        FileUtils.deleteFile(avatar.getAbsolutePath());
+        try {
+            FileOutputStream fos = new FileOutputStream(avatar);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            return avatar.getAbsolutePath();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

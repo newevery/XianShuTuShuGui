@@ -36,21 +36,13 @@
             android:textColor="@color/colorBlack" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:inputType="number"
-            android:padding="5dp"
-            android:text="实际天数: "
-            android:textColor="@color/colorBlack" />
-        <EditText
             android:id="@+id/tv_borrow_day"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:gravity="center"
-            android:inputType="number"
+            android:text="请选择时间"
+            android:clickable="true"
             android:padding="5dp"
             android:textColor="@color/colorBlack" />
         <Button

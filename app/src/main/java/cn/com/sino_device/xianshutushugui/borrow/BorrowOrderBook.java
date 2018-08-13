@@ -14,9 +14,28 @@ public class BorrowOrderBook {
     private String type;
     private String pages;
     private String isbnCode;
+    private String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     private String mobile;
     private String catalog;
     private String cost;
+    private String isCollect;
+
+    public String getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(String isCollect) {
+        this.isCollect = isCollect;
+    }
 
     public String getPubdate() {
         return pubdate;

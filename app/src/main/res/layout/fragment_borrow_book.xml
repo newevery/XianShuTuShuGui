@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:id="@+id/ll_borrow"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,15 +15,17 @@
             android:id="@+id/tv_borrow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:gravity="center|left"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/colorPeachPuff"
             android:text="预约借书"
             android:clickable="true"
             android:textColor="#000000"
             android:textSize="15sp" />
         <TextView
             android:id="@+id/tv_givebook"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="30dp"
             android:gravity="center"
             android:clickable="true"

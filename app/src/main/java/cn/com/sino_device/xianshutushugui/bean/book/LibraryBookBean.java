@@ -19,6 +19,16 @@ public  class LibraryBookBean {
     private String author;
     private String name;
     private String pubdate;
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    private String publisher;
     private String catalog;
     private String pages;
     private String photo1;

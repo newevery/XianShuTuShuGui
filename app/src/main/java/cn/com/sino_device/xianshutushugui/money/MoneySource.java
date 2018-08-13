@@ -1,7 +1,7 @@
 package cn.com.sino_device.xianshutushugui.money;
 
-import cn.com.sino_device.xianshutushugui.bean.user.UserDeposit;
-import cn.com.sino_device.xianshutushugui.bean.user.UserPay;
+import cn.com.sino_device.xianshutushugui.bean.money.UserDeposit;
+import cn.com.sino_device.xianshutushugui.bean.money.UserPay;
 
 /**
  * Created by Android Studio.

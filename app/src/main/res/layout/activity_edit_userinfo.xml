@@ -212,15 +212,25 @@
             android:text="@string/text_classes"
             android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/et_classes"
+        <TextView
+            android:id="@+id/tv_choose_classes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:inputType="text"
-            android:textSize="14sp" />
+            android:gravity="center_vertical"
+            android:text="@string/text_choose" />
+
+        <!--<EditText-->
+            <!--android:id="@+id/et_classes"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:inputType="text"-->
+            <!--android:textSize="14sp" />-->
 
     </LinearLayout>
 

@@ -1,9 +1,15 @@
 package cn.com.sino_device.xianshutushugui.user.userinfo;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import cn.com.sino_device.xianshutushugui.WebSocket.CallBack;
 import cn.com.sino_device.xianshutushugui.WebSocket.WebSocketAsyncTask;
@@ -36,5 +42,33 @@ public class GetUserInfoRealization implements GetUserInfoSource {
 
             }
         }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getUserInfo", getUserInfo.toString());
+    }
+
+    @Override
+    public void getUserAvatar(String url, GetUserInfoCallback userInfoCallback) {
+        new Thread(() -> {
+            Bitmap bmp;
+            try {
+                URL myurl = new URL(url);
+                // 获得连接
+                HttpURLConnection conn = (HttpURLConnection) myurl.openConnection();
+                // 设置超时
+                conn.setConnectTimeout(6000);
+                conn.setDoInput(true);
+                // 不缓存
+                conn.setUseCaches(false);
+                conn.connect();
+                // 获得图片的数据流
+                InputStream is = conn.getInputStream();
+                bmp = BitmapFactory.decodeStream(is);
+                is.close();
+                userInfoCallback.onSuccess(bmp);
+            } catch (Exception e) {
+                e.printStackTrace();
+                userInfoCallback.onError(e);
+            }
+
+
+        }).start();
     }
 }

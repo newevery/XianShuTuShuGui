@@ -27,7 +27,7 @@ public class Base64BitmapUtil {
         try {
             if (bitmap != null) {
                 baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100  , baos);
 
                 baos.flush();
                 baos.close();
@@ -58,7 +58,10 @@ public class Base64BitmapUtil {
      * @return
      */
     public static Bitmap base64ToBitmap(String base64Data) {
-        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+        // "data:image/jpeg;base64,"
+        String temp = base64Data.replace("data:image/jpeg;base64,", "");
+
+        byte[] bytes = Base64.decode(temp, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 

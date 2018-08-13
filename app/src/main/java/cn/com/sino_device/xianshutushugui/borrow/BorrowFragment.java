@@ -1,29 +1,23 @@
 package cn.com.sino_device.xianshutushugui.borrow;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,13 +36,15 @@ import cn.com.sino_device.xianshutushugui.bean.user.Result;
  */
 public class BorrowFragment extends Fragment {
     private static final String TAG = "BorrowFragment";
-
+    private GestureDetector gesture; //手势识别
     ListView lvBorrow;
     private BorrowBookAdapter lvBorrowAdapter;
     private List<BookBorrow> borrowList = new ArrayList<>();
     ListView lvGiveBook;
     private BorrowBookAdapter lvGiveBackAdapter;
     private List<BookBorrow> givebookList = new ArrayList<>();
+    private TextView tvGiveBook;
+    private TextView tvBorrow;
 
     /**
      * user : {"mobile":"18603195364"}
@@ -83,37 +79,84 @@ public class BorrowFragment extends Fragment {
             initView(view);// 控件初始化
         }
 
+
         initView(view);
         return view;
     }
 
     private void initView(View view) {
+        //根据父窗体getActivity()为fragment设置手势识别
+        gesture = new GestureDetector(this.getActivity(), new MyOnGestureListener());
+        //为fragment添加OnTouchListener监听器
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);//返回手势识别触发的事件
+            }
+        });
+
         lvBorrow = view.findViewById(R.id.lv_borrow);
         lvBorrowAdapter = new BorrowBookAdapter(getActivity(), borrowList);
         lvBorrowAdapter.notifyDataSetChanged();
         lvBorrow.setAdapter(lvBorrowAdapter);
-
+        lvBorrow.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);//返回手势识别触发的事件
+            }
+        });
 
         lvGiveBook = view.findViewById(R.id.lv_givebook);
         lvGiveBackAdapter = new BorrowBookAdapter(getActivity(), givebookList);
         lvGiveBackAdapter.notifyDataSetChanged();
         lvGiveBook.setAdapter(lvGiveBackAdapter);
-        view.findViewById(R.id.tv_borrow).setOnClickListener(new View.OnClickListener() {
+        lvGiveBook.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                    lvBorrow.setVisibility(View.VISIBLE);
-                    lvGiveBook.setVisibility(View.GONE);
-
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);//返回手势识别触发的事件
             }
         });
-        view.findViewById(R.id.tv_givebook).setOnClickListener(new View.OnClickListener() {
+        tvGiveBook = view.findViewById(R.id.tv_givebook);
+        tvBorrow = view.findViewById(R.id.tv_borrow);
+        tvBorrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                lvBorrow.setVisibility(View.VISIBLE);
+                lvGiveBook.setVisibility(View.GONE);
+                tvBorrow.setBackgroundColor(getResources().getColor(R.color.colorPeachPuff));
+                tvGiveBook.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            }
+        });
+        tvGiveBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData(1);
                 lvBorrow.setVisibility(View.GONE);
                 lvGiveBook.setVisibility(View.VISIBLE);
-
+                tvBorrow.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                tvGiveBook.setBackgroundColor(getResources().getColor(R.color.colorPeachPuff));
             }
         });
+    }
+
+    //设置手势识别监听器
+    private class MyOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override//此方法必须重写且返回真，否则onFling不起效
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if ((e1.getX() - e2.getX() > 120) && Math.abs(velocityX) > 200) {
+                tvBorrow.performClick();
+                return true;
+            } else if ((e2.getX() - e1.getX() > 120) && Math.abs(velocityX) > 200) {
+                tvGiveBook.performClick();
+                return true;
+            }
+            return false;
+        }
     }
 
     Handler myHandler = new Handler() {
@@ -177,7 +220,7 @@ public class BorrowFragment extends Fragment {
             borrowList.clear();
             givebookList.clear();
             initData(0);
-            initData(1);
+
             Log.i(TAG, "页面前台展示");
         }
     }

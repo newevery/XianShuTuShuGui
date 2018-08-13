@@ -8,130 +8,148 @@ package cn.com.sino_device.xianshutushugui.bean.user;
  */
 public class ResultGetUserInfo {
 
-    private String id;
-
-    private String createDate;
-
-    private String updateDate;
-
+    /**
+     * 编号
+     */
+    private String userId;
+    /**
+     * 家长姓名
+     */
     private String name;
-
+    /**
+     * 性别
+     */
     private String sex;
-
-    private String mobile;
-
-    private String password;
-
+    /**
+     * 用户头像
+     */
     private String photo;
-
+    /**
+     * 学号
+     */
     private String no;
-
-    private String deposit;
-
+    /**
+     * 学生姓名
+     */
+    private String stuName;
+    /**
+     * 所在班级
+     */
+    private String classes;
+    /**
+     * 邮箱
+     */
     private String email;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
+     * 手机号
+     */
+    private String mobile;
+    /**
+     * 押金
+     */
+    private String deposit;
+    /**
+     * 余额
+     */
+    private String cost;
 
-    public void setId(String id) {
-        this.id = id;
+    public String getUserId() {
+        return userId;
     }
 
-    public String getId() {
-        return this.id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreateDate() {
-        return this.createDate;
-    }
-
-    public void setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getUpdateDate() {
-        return this.updateDate;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return this.name;
+    public String getSex() {
+        return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
     }
 
-    public String getSex() {
-        return this.sex;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getMobile() {
-        return this.mobile;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return this.password;
+    public String getPhoto() {
+        return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
     }
 
-    public String getPhoto() {
-        return this.photo;
+    public String getNo() {
+        return no;
     }
 
     public void setNo(String no) {
         this.no = no;
     }
 
-    public String getNo() {
-        return this.no;
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setDeposit(String deposit) {
-        this.deposit = deposit;
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
-    public String getDeposit() {
-        return this.deposit;
+    public String getClasses() {
+        return classes;
+    }
+
+    public void setClasses(String classes) {
+        this.classes = classes;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getEmail() {
-        return this.email;
+    public String getPassword() {
+        return password;
     }
 
-    @Override
-    public String toString() {
-        return "ResultGetUserInfo{" +
-                "id='" + id + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", updateDate='" + updateDate + '\'' +
-                ", name='" + name + '\'' +
-                ", sex='" + sex + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
-                ", photo='" + photo + '\'' +
-                ", no='" + no + '\'' +
-                ", deposit='" + deposit + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 }

@@ -42,7 +42,7 @@ import cn.com.sino_device.xianshutushugui.bean.user.Result;
 /**
  * @author null
  */
-public class BorrowDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class BorrowDetailActivity extends AppCompatActivity {
     private static final String TAG = "BorrowDetailActivity";
     // 返回图书信息
     public static final int RETURN_BOOKINFO_STATUS = 200;
@@ -66,6 +66,7 @@ public class BorrowDetailActivity extends AppCompatActivity implements View.OnCl
     private BorrowOrderBook book;
     private String ISBN;
     private URL url;
+    private String tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,28 +83,225 @@ public class BorrowDetailActivity extends AppCompatActivity implements View.OnCl
         bookPrice = findViewById(R.id.book_price);
         bookSummary = findViewById(R.id.book_summary);
         btnCancleShare = findViewById(R.id.btn_cancle);
-        btnCancleShare.setOnClickListener(this);
+        btnCancleShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BorrowDetailActivity.this.finish();
+            }
+        });
         btnCollection = findViewById(R.id.btn_collection);//加入收藏
-        btnCollection.setOnClickListener(this);
         btnDirectBorrow = findViewById(R.id.btn_directborrow);//直接借阅
-        btnDirectBorrow.setOnClickListener(this);
 
         bookId = getIntent().getStringExtra("bookId");
-        String tag = getIntent().getStringExtra("tag");
+        tag = getIntent().getStringExtra("tag");
         if (tag != null && !"".equals(tag)) {//  1书库 2 捐书 3 收藏 4
             if ("1".equals(tag)) {
                 btnCollection.setVisibility(View.VISIBLE);
-//                btnCollection.setText("加入收藏");
+                btnCollection.setText("加入收藏");
+                btnCollection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("bookId", bookId);
+                        map.put("flag", "1");
+                        new WebSocketAsyncTask(new CallBack() {
+                            @Override
+                            public void onSuccess(String message) {
+                                Gson gson = new Gson();
+                                Result result = gson.fromJson(message, Result.class);
+                                if (result.isSuccess()) {
+                                    Log.i(TAG, result.getMsg());
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(BorrowDetailActivity.this, result.getMsg(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    BorrowDetailActivity.this.finish();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "collectBook", JsonUtil.mapToJson(map));
+                    }
+                });
+                btnDirectBorrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Map<String, String> map2 = new HashMap<>();
+                        map2.put("bookId", bookId + "");
+                        map2.put("number", "1");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        map2.put("orderTime", df.format(new Date()) + "");
+                        map2.put("createTime", df.format(new Date()) + "");
+                        map2.put("day", "22");
+                        map2.put("type", "0");
+                        new WebSocketAsyncTask(new CallBack() {
+                            @Override
+                            public void onSuccess(String message) {
+                                Gson gson = new Gson();
+                                Result result = gson.fromJson(message, Result.class);
+                                if (result.isSuccess()) {
+                                    Log.i(TAG, result.getMsg());
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(BorrowDetailActivity.this, result.getMsg(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    BorrowDetailActivity.this.finish();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", JsonUtil.mapToJson(map2));
+
+
+                    }
+                });
             } else if ("2".equals(tag)) {
+                btnCollection.setVisibility(View.GONE);
+                btnDirectBorrow.setText("分享");
+                btnDirectBorrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            } else if ("3".equals(tag)) {
 //                btnCollection.setVisibility(View.GONE);
                 btnCollection.setText("分享");
-            }else if ("3".equals(tag)) {
+                btnCollection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                btnDirectBorrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            } else if ("4".equals(tag)) {
 //                btnCollection.setVisibility(View.GONE);
                 btnCollection.setText("分享");
-            }else if ("4".equals(tag)) {
+                btnCollection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                btnDirectBorrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new WebSocketAsyncTask(new CallBack() {
+                            @Override
+                            public void onSuccess(String message) {
+                                Gson gson = new Gson();
+                                Result result = gson.fromJson(message, Result.class);
+                                if (result.isSuccess()) {
+                                    Log.i(TAG, result.getMsg());
+
+//                                   if ()
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", "{}");
+
+
+                        Map<String, String> map2 = new HashMap<>();
+                        map2.put("bookId", bookId + "");
+                        map2.put("number", "1");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        map2.put("orderTime", df.format(new Date()) + "");
+                        map2.put("createTime", df.format(new Date()) + "");
+                        map2.put("day", "22");
+                        map2.put("type", "0");
+                        new WebSocketAsyncTask(new CallBack() {
+                            @Override
+                            public void onSuccess(String message) {
+                                Gson gson = new Gson();
+                                Result result = gson.fromJson(message, Result.class);
+                                if (result.isSuccess()) {
+                                    Log.i(TAG, result.getMsg());
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(BorrowDetailActivity.this, result.getMsg(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    BorrowDetailActivity.this.finish();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", JsonUtil.mapToJson(map2));
+
+                    }
+                });
+
+            } else if ("5".equals(tag)) {
 //                btnCollection.setVisibility(View.GONE);
                 btnCollection.setText("分享");
                 btnDirectBorrow.setText("直接归还");
+                btnCollection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                btnDirectBorrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (book.getIsCollect() == "1" || "1".equals(book.getIsCollect())) {
+
+                        }
+                        Map<String, String> map2 = new HashMap<>();
+                        map2.put("bookId", bookId + "");
+                        map2.put("number", "1");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        map2.put("orderTime", df.format(new Date()) + "");
+                        map2.put("createTime", df.format(new Date()) + "");
+                        map2.put("day", "22");
+                        map2.put("type", "1");
+                        new WebSocketAsyncTask(new CallBack() {
+                            @Override
+                            public void onSuccess(String message) {
+                                Gson gson = new Gson();
+                                Result result = gson.fromJson(message, Result.class);
+                                if (result.isSuccess()) {
+                                    Log.i(TAG, result.getMsg());
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(BorrowDetailActivity.this, result.getMsg(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    BorrowDetailActivity.this.finish();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", JsonUtil.mapToJson(map2));
+                    }
+                });
             }
         }
 
@@ -133,8 +331,22 @@ public class BorrowDetailActivity extends AppCompatActivity implements View.OnCl
                     bookPages.setText("页码： " + book.getPages());
                     bookPrice.setTag("定价： " + book.getPrice());
                     bookSummary.setText(book.getIntroduction());
+                    if (tag != null && !"".equals(tag)) {
+                        System.out.println(book.getState());
+                        if (book.getIsCollect() == "1" || "1".equals(book.getIsCollect())) {
+                            btnCollection.setText("已收藏");
+                            btnCollection.setClickable(false);
 
-                    break;
+                        }
+                        if (book.getState() == "1" || "1".equals(book.getState())) {
+                            btnDirectBorrow.setText("已借阅");
+                            btnDirectBorrow.setClickable(false);
+
+                        }
+                        break;
+                    }
+
+
             }
         }
     };
@@ -235,68 +447,68 @@ public class BorrowDetailActivity extends AppCompatActivity implements View.OnCl
 //        return context;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_cancle:
-                BorrowDetailActivity.this.finish();
-                break;
-            case R.id.btn_collection:
-                Map<String, String> map = new HashMap<>();
-                map.put("bookId", bookId);
-                map.put("flag", "1");
-                new WebSocketAsyncTask(new CallBack() {
-                    @Override
-                    public void onSuccess(String message) {
-                        Gson gson = new Gson();
-                        Result result = gson.fromJson(message, Result.class);
-                        if (result.isSuccess()) {
-                            Log.i(TAG, result.getMsg());
-//                                System.out.println(result.getMsg());
-                            BorrowDetailActivity.this.finish();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String error) {
-
-                    }
-                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "collectBook", JsonUtil.mapToJson(map));
-
-                break;
-            case R.id.btn_directborrow:
-
-                Map<String, String> map2 = new HashMap<>();
-                map2.put("bookId", bookId + "");
-                map2.put("number", "1");
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                map2.put("orderTime", df.format(new Date()) + "");
-                map2.put("createTime", df.format(new Date()) + "");
-                map2.put("day", "22");
-                map2.put("type", "0");
-                new WebSocketAsyncTask(new CallBack() {
-                    @Override
-                    public void onSuccess(String message) {
-                        Gson gson = new Gson();
-                        Result result = gson.fromJson(message, Result.class);
-                        if (result.isSuccess()) {
-                            Log.i(TAG, result.getMsg());
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(String error) {
-
-                    }
-                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", JsonUtil.mapToJson(map2));
-
-                BorrowDetailActivity.this.finish();
-                break;
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.btn_cancle:
+//                BorrowDetailActivity.this.finish();
+//                break;
+//            case R.id.btn_collection:
+//                Map<String, String> map = new HashMap<>();
+//                map.put("bookId", bookId);
+//                map.put("flag", "1");
+//                new WebSocketAsyncTask(new CallBack() {
+//                    @Override
+//                    public void onSuccess(String message) {
+//                        Gson gson = new Gson();
+//                        Result result = gson.fromJson(message, Result.class);
+//                        if (result.isSuccess()) {
+//                            Log.i(TAG, result.getMsg());
+////                                System.out.println(result.getMsg());
+//                            BorrowDetailActivity.this.finish();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String error) {
+//
+//                    }
+//                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "collectBook", JsonUtil.mapToJson(map));
+//
+//                break;
+//            case R.id.btn_directborrow:
+//
+//                Map<String, String> map2 = new HashMap<>();
+//                map2.put("bookId", bookId + "");
+//                map2.put("number", "1");
+//                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                map2.put("orderTime", df.format(new Date()) + "");
+//                map2.put("createTime", df.format(new Date()) + "");
+//                map2.put("day", "22");
+//                map2.put("type", "0");
+//                new WebSocketAsyncTask(new CallBack() {
+//                    @Override
+//                    public void onSuccess(String message) {
+//                        Gson gson = new Gson();
+//                        Result result = gson.fromJson(message, Result.class);
+//                        if (result.isSuccess()) {
+//                            Log.i(TAG, result.getMsg());
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String error) {
+//
+//                    }
+//                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "orderBook", JsonUtil.mapToJson(map2));
+//
+//                BorrowDetailActivity.this.finish();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
 
 }

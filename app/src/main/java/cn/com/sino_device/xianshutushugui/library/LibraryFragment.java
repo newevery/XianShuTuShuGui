@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 
 import android.support.v4.app.Fragment;
@@ -25,17 +26,24 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.com.sino_device.xianshutushugui.R;
 import cn.com.sino_device.xianshutushugui.WebSocket.CallBack;
+import cn.com.sino_device.xianshutushugui.WebSocket.JsonUtil;
 import cn.com.sino_device.xianshutushugui.WebSocket.WebSocketAsyncTask;
 import cn.com.sino_device.xianshutushugui.WebSocket.WebSocketInstance;
 import cn.com.sino_device.xianshutushugui.bean.Book;
+import cn.com.sino_device.xianshutushugui.bean.book.LibraryBookBean;
 import cn.com.sino_device.xianshutushugui.bean.user.Result;
 import cn.com.sino_device.xianshutushugui.search.SearchActivity;
+import cn.com.sino_device.xianshutushugui.util.MessageEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -64,6 +72,7 @@ public class LibraryFragment extends Fragment implements View.OnClickListener, S
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_library_book, container, false);
         tvNetError = view.findViewById(R.id.tv_netError);
+
         initView(view);
         initdate();
 
@@ -114,10 +123,20 @@ public class LibraryFragment extends Fragment implements View.OnClickListener, S
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        // 点击搜索后，跳转到 SearchActivity
-        Intent intentSearch = new Intent(this.getActivity(), SearchActivity.class);
-        intentSearch.putExtra("Keyword", query);
-        startActivity(intentSearch);
+//        // 点击搜索后，跳转到 SearchActivity
+//        Intent intentSearch = new Intent(this.getActivity(), SearchActivity.class);
+//        intentSearch.putExtra("Keyword", query);
+//        startActivity(intentSearch);
+        EventBus.getDefault().post(new MessageEvent(query));
+
+
+
+
+
+
+
+
+
         return false;
     }
 
@@ -209,6 +228,11 @@ public class LibraryFragment extends Fragment implements View.OnClickListener, S
         mTab.setupWithViewPager(mViewpager);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 
 //
 }

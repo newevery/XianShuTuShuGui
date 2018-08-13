@@ -9,6 +9,11 @@ import android.widget.ImageButton;
 
 import cn.com.sino_device.xianshutushugui.R;
 
+/**
+ * 设置
+ *
+ * @author affe
+ */
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SettingActivity";
 

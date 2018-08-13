@@ -129,6 +129,20 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ib_wechat_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon24_wx_button" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

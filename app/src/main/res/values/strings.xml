@@ -41,6 +41,7 @@
     <string name="text_change_avatar">设置头像</string>
     <string name="text_nickname">昵称</string>
     <string name="text_user_name">用户名</string>
+    <string name="text_parent_name">家长姓名</string>
     <string name="text_sex">性别</string>
     <string name="text_school">学校</string>
     <string name="text_no">学号</string>
@@ -64,6 +65,7 @@
     <string name="text_edit_mobile">修改手机号</string>
     <string name="text_password_setting">密码设置</string>
     <string name="text_set_login_password">设置登录密码</string>
+    <string name="text_set_login_mobile">设置手机号</string>
     <string name="text_security_check">安全验证</string>
     <string name="text_next">下一步</string>
     <string name="text_confirm">确认</string>

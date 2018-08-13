@@ -1,12 +1,12 @@
 package cn.com.sino_device.xianshutushugui.book;
 
-import cn.com.sino_device.xianshutushugui.bean.user.DonateBook;
-import cn.com.sino_device.xianshutushugui.bean.user.GetBookType;
-import cn.com.sino_device.xianshutushugui.bean.user.GetBooks;
-import cn.com.sino_device.xianshutushugui.bean.user.GetInfo;
-import cn.com.sino_device.xianshutushugui.bean.user.GiveBackBook;
-import cn.com.sino_device.xianshutushugui.bean.user.OrderBook;
-import cn.com.sino_device.xianshutushugui.bean.user.RIOrderBook;
+import cn.com.sino_device.xianshutushugui.bean.book.DonateBook;
+import cn.com.sino_device.xianshutushugui.bean.book.GetBookType;
+import cn.com.sino_device.xianshutushugui.bean.book.GetBooks;
+import cn.com.sino_device.xianshutushugui.bean.book.GiveBackBook;
+import cn.com.sino_device.xianshutushugui.bean.book.OrderBook;
+import cn.com.sino_device.xianshutushugui.bean.book.RIOrderBook;
+import cn.com.sino_device.xianshutushugui.bean.book.UploadBook;
 
 /**
  * Created by Android Studio.
@@ -40,7 +40,13 @@ public interface BookSource {
      */
     void getBooks(GetBooks getBooks, BookCallback bookCallback);
 
-
+    /**
+     * 图书上传
+     *
+     * @param uploadBook
+     * @param bookCallback
+     */
+    void uploadBook(UploadBook uploadBook, BookCallback bookCallback);
 
     /**
      * 图书捐赠接口
