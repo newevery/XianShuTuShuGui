@@ -6,10 +6,21 @@
     <item
         android:id="@+id/book_card"
         android:icon="@drawable/book_card"
-        android:title="借书卡" />
+        android:title="我的消息" />
     <item
         android:id="@+id/setting"
         android:icon="@drawable/setting"
         android:title="设置" />
-
+    <!--<item-->
+        <!--android:id="@+id/setPhoneNumber"-->
+        <!--android:icon="@drawable/setting"-->
+        <!--android:title="修改手机号" />-->
+    <item
+        android:id="@+id/mypay"
+        android:icon="@drawable/setting"
+        android:title="账户" />
+    <item
+        android:id="@+id/about"
+        android:icon="@drawable/setting"
+        android:title="@string/text_about" />
 </menu>

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorHeaderBg">#C2C2C2</color>
 
     <!-- begin: X11颜色（或称SVG颜色） -->
     <!-- 红色系 -->

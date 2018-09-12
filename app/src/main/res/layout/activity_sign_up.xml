@@ -4,23 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".user.signup.SignUpActivity">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/horizontal_margin"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
-        android:layout_marginStart="@dimen/horizontal_margin"
-        android:layout_marginTop="@dimen/vertical_margin">
+        android:layout_height="40dp"
+        android:background="@color/colorHeaderBg">
 
         <TextView
             android:id="@+id/tv_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
             android:text="@string/text_cancel" />
 
         <TextView
@@ -38,6 +34,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
             android:text="@string/text_sign_up_commit"
             tools:ignore="RelativeOverlap" />
 
@@ -73,6 +70,11 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,6 +95,7 @@
 
         <EditText
             android:id="@+id/et_username"
+            android:background="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -102,7 +105,10 @@
             android:textSize="14sp" />
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,18 +127,45 @@
             android:text="@string/text_sex"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tv_sex"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/rg_sex"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/text_choose" />
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_man"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/man" />
+
+            <RadioButton
+                android:id="@+id/rb_woman"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/woman" />
+        </RadioGroup>
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_sex"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:text="@string/text_choose" />-->
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -158,12 +191,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
+            android:background="@null"
             android:layout_marginStart="10dp"
             android:inputType="phone"
             android:textSize="14sp" />
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -201,11 +238,15 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:singleLine="true"
+                android:background="@null"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -241,13 +282,17 @@
                 android:layout_gravity="center_vertical"
                 android:hint="@string/text_set_password"
                 android:imeOptions="actionDone"
+                android:background="@null"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -273,11 +318,15 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
+            android:background="@null"
             android:inputType="number"
             android:textSize="14sp" />
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -304,10 +353,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:inputType="text"
+            android:background="@null"
             android:textSize="14sp" />
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -329,25 +382,29 @@
         <TextView
             android:id="@+id/tv_choose_classes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
+
             android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="@string/text_choose" />
 
-        <EditText
-        android:id="@+id/et_classes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:inputType="text"
-        android:textSize="14sp" />
+        <!--<EditText-->
+        <!--android:id="@+id/et_classes"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:inputType="text"-->
+        <!--android:textSize="14sp" />-->
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorHeaderBg" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -387,7 +444,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_email"
@@ -396,7 +454,8 @@
             android:gravity="center_vertical"
             android:src="@drawable/default_avatar"
             android:text="@string/text_email"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/et_email"

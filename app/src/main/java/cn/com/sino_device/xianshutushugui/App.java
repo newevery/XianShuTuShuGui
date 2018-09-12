@@ -6,14 +6,10 @@ import android.support.multidex.MultiDex;
 
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 
+import cn.com.sino_device.xianshutushugui.util.ScreenUtil;
 import cn.com.sino_device.xianshutushugui.wxapi.WXEntryActivity;
+import cn.jpush.android.api.JPushInterface;
 
-/**
- * Created by Android Studio.
- *
- * @author affe
- * @date 2018/6/22
- */
 public class App extends Application {
 
     private static App sInstance;
@@ -26,6 +22,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ScreenUtil.resetDensity(this);
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+
         sInstance = this;
 
         // 在这里为应用设置异常处理，然后程序才能获取未处理的异常

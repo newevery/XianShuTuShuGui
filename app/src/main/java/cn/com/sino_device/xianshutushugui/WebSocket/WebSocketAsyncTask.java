@@ -9,6 +9,8 @@ import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import cn.com.sino_device.xianshutushugui.util.SPUtils;
+
 /**
  * Created by Android Studio.
  *
@@ -32,18 +34,18 @@ public class WebSocketAsyncTask extends AsyncTask<String, Integer, CallBack> {
 
     @Override
     protected CallBack doInBackground(String... strings) {
-        // TODO: 18-7-17请求服务器获取图书类目
+        // TODO: 18-7-17请求服务器获取图书类目  192.168.14.14:8080
         try {
             if (c == null || c.isClosed()) {
-                c = new MyWebSocketClient(new URI("ws://192.168.14.158:8080/jeeplus/syslibSocketServer"), new Draft_17());
+                c = new MyWebSocketClient(new URI("ws://192.168.14.14:8080/jeeplus/syslibSocketServer"), new Draft_17());
             }
-            c = new MyWebSocketClient(new URI("ws://192.168.14.158:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
+            c = new MyWebSocketClient(new URI("ws://192.168.14.14:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
             if (c.connectBlocking()) {
                 StringBuffer sb = new StringBuffer();
 //               sb.append(strings[1]).insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
-                String mobile = "18603195364";
-                if (!"".equals(mobile) && mobile != null) {
-                    sb.append(strings[1]).insert(sb.indexOf("{") + 1, "mobile:'" + mobile + "',").insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
+
+                if (!"".equals(strings[0]) && strings[0] != null) {
+                    sb.append(strings[1]).insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
                 }
                 if (sb.toString().endsWith(",}")) {
                     sb.replace(sb.length() - 2, sb.length() - 1, "");
@@ -53,15 +55,14 @@ public class WebSocketAsyncTask extends AsyncTask<String, Integer, CallBack> {
             } else {
                 Log.i(TAG, "WebsocketNotConnectedException");
                 if (c == null || c.isClosed()) {
-                    c = new MyWebSocketClient(new URI("ws://192.168.14.158:8080/jeeplus/syslibSocketServer"), new Draft_17());
+                    c = new MyWebSocketClient(new URI("ws://192.168.14.14:8080/jeeplus/syslibSocketServer"), new Draft_17());
                 }
-                c = new MyWebSocketClient(new URI("ws://192.168.14.158:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
+                c = new MyWebSocketClient(new URI("ws://192.168.14.14:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
                 if (c.connectBlocking()) {
                     StringBuffer sb = new StringBuffer();
 //               sb.append(strings[1]).insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
-                    String mobile = "18603195364";
-                    if (!"".equals(mobile) && mobile != null) {
-                        sb.append(strings[1]).insert(sb.indexOf("{") + 1, "mobile:'" + mobile + "',").insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
+                    if (!"".equals(strings[0]) && strings[0] != null) {
+                        sb.append(strings[1]).insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
                     }
                     if (sb.toString().endsWith(",}")) {
                         sb.replace(sb.length() - 2, sb.length() - 1, "");
@@ -72,15 +73,14 @@ public class WebSocketAsyncTask extends AsyncTask<String, Integer, CallBack> {
                     Log.i(TAG, "WebsocketNotConnectedException");
                     Log.i(TAG, "WebsocketNotConnectedException");
                     if (c == null || c.isClosed()) {
-                        c = new MyWebSocketClient(new URI("ws://192.168.14.158:8080/jeeplus/syslibSocketServer"), new Draft_17());
+                        c = new MyWebSocketClient(new URI("ws://192.168.14.14:8080/jeeplus/syslibSocketServer"), new Draft_17());
                     }
-                    c = new MyWebSocketClient(new URI("ws://192.168.14.158:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
+                    c = new MyWebSocketClient(new URI("ws://192.168.14.14:8080/jeeplus/syslibSocketServer"), new Draft_17(), callBack);
                     if (c.connectBlocking()) {
                         StringBuffer sb = new StringBuffer();
 //               sb.append(strings[1]).insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
-                        String mobile = "18603195364";
-                        if (!"".equals(mobile) && mobile != null) {
-                            sb.append(strings[1]).insert(sb.indexOf("{") + 1, "mobile:'" + mobile + "',").insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
+                        if (!"".equals(strings[0]) && strings[0] != null) {
+                            sb.append(strings[1]).insert(sb.indexOf("{") + 1, "methodName:'" + strings[0] + "',");
                         }
                         if (sb.toString().endsWith(",}")) {
                             sb.replace(sb.length() - 2, sb.length() - 1, "");

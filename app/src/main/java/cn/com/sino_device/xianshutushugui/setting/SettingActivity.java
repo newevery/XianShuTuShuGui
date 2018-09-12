@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import cn.com.sino_device.xianshutushugui.R;
+import cn.com.sino_device.xianshutushugui.book.AboutActivity;
 
 /**
  * 设置
@@ -26,6 +27,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
      * 账号与安全
      */
     private Button btnAccountSecurity;
+    private Button btnAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         //
         btnAccountSecurity = findViewById(R.id.btn_account_security);
         btnAccountSecurity.setOnClickListener(this);
+        btnAbout=findViewById(R.id.btn_about);
+        btnAbout.setOnClickListener(this);
     }
 
     @Override
@@ -52,6 +56,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btn_account_security:
                 Intent intentAccountSecurity = new Intent(SettingActivity.this, AccountSecurityActivity.class);
                 startActivity(intentAccountSecurity);
+                break;
+
+            case R.id.btn_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
             default:
                 break;

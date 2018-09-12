@@ -4,22 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".user.MsgSignInActivity">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/horizontal_margin"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
-        android:layout_marginStart="@dimen/horizontal_margin"
-        android:layout_marginTop="@dimen/vertical_margin">
+        android:layout_height="40dp"
+        android:background="@color/colorHeaderBg">
 
         <ImageButton
             android:id="@+id/ib_go_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_back"
             tools:ignore="ContentDescription" />
@@ -80,15 +76,15 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/general_border_line"
+            android:background="#627efb"
             android:gravity="center"
             android:text="@string/text_get_message_verification_code"
+            android:textColor="@color/white"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
     <Button
-        android:clickable="false"
         android:id="@+id/btn_sign_in"
         style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
@@ -99,7 +95,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_selector"
-        android:text="@string/action_sign_in"
+        android:clickable="false"
+        android:radius="12dp"
         android:textStyle="bold" />
 
 

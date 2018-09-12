@@ -13,10 +13,8 @@ import java.util.Date;
 
 import cn.com.sino_device.xianshutushugui.WebSocket.CallBack;
 import cn.com.sino_device.xianshutushugui.WebSocket.WebSocketInstance;
-import cn.com.sino_device.xianshutushugui.bean.user.GetInfo;
-import cn.com.sino_device.xianshutushugui.bean.user.ResultGetInfo;
-import cn.com.sino_device.xianshutushugui.bean.user.UserLogin;
-import cn.com.sino_device.xianshutushugui.bean.user.UserRegister;
+import cn.com.sino_device.xianshutushugui.bean.user.sign.UserLogin;
+
 
 /**
  * 接口测试

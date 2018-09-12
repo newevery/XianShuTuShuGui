@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/signin_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/vertical_margin"
     android:paddingLeft="@dimen/horizontal_margin"
     android:paddingRight="@dimen/horizontal_margin"
-    android:paddingTop="@dimen/vertical_margin"
-    tools:context=".user.signin.SignInActivity">
+    android:paddingTop="@dimen/vertical_margin">
 
     <!-- Login progress -->
     <ProgressBar
@@ -24,126 +23,145 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="8"
         android:gravity="center"
-        android:text="@string/app_name"
+        android:text=""
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_size" />
 
-    <ScrollView
-        android:id="@+id/login_form"
+
+    <LinearLayout
+        android:id="@+id/account_login_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3">
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/account_login_form"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_account"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@drawable/zh"
+            android:layout_height="48dp"
+            app:hintEnabled="false">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_account"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tiet_account"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintEnabled="false">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="20dp"
+                android:hint="@string/prompt_account"
+                android:background="@null"
+                android:imeOptions="actionDone"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/tiet_account"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:drawableLeft="@drawable/ic_general_account"
-                    android:drawableStart="@drawable/ic_general_account"
-                    android:hint="@string/prompt_account"
-                    android:imeOptions="actionDone"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_password"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/mm"
+            app:hintEnabled="false"
+            app:passwordToggleDrawable="@drawable/password"
+            app:passwordToggleEnabled="true">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_password"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tiet_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintEnabled="false"
-                app:passwordToggleDrawable="@drawable/password"
-                app:passwordToggleEnabled="true">
+                android:layout_height="48dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="20dp"
+                android:background="@null"
+                android:hint="@string/password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:singleLine="false" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/tiet_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:drawableLeft="@drawable/ic_general_password"
-                    android:drawableStart="@drawable/ic_general_password"
-                    android:hint="@string/password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/tv_forget_password"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/forget_password" />
 
             <CheckBox
                 android:id="@+id/cb_remember_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:gravity="center"
                 android:text="@string/remember_password" />
+        </RelativeLayout>
 
-            <Button
-                android:id="@+id/btn_sign_in"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_selector"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+        <Button
+            android:id="@+id/btn_sign_in"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_selector"
+            android:textStyle="bold" />
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_sign_in_msg_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="@string/text_login_mobile"
+                android:textSize="@dimen/text_size_sign_up" />
 
-                <TextView
-                    android:id="@+id/tv_sign_in_msg_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/text_login_mobile"
-                    android:textSize="@dimen/text_size_sign_up" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="  |  "
-                    android:textSize="@dimen/text_size_sign_up" />
-
-                <TextView
-                    android:id="@+id/tv_sign_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/text_no_account"
-                    android:textSize="@dimen/text_size_sign_up" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="100dp"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:text="  |  "
+                android:textSize="@dimen/text_size_sign_up" />
 
-                <ImageButton
-                    android:id="@+id/ib_wechat_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/icon24_wx_button" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="@string/text_no_account"
+                android:textSize="@dimen/text_size_sign_up" />
 
         </LinearLayout>
-    </ScrollView>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ib_wechat_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon24_wx_button" />
+    </LinearLayout>
 </LinearLayout>

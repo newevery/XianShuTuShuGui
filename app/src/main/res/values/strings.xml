@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">闲书图书柜</string>
-
     <!-- (主界面)底部导航菜单text -->
     <string name="menu_bottom_navigation_library">书库</string>
     <string name="menu_bottom_navigation_donate">捐书</string>
-    <string name="menu_bottom_navigation_borrow">预约</string>
-    <string name="menu_bottom_navigation_mycollect">借书</string>
+    <string name="menu_bottom_navigation_borrow">借书</string>
+    <!--<string name="menu_bottom_navigation_mycollect">借书</string>-->
     <string name="menu_bottom_navigation_return">还书</string>
-
 
     <!-- 登录界面text -->
     <string name="prompt_account">账号</string>
@@ -35,7 +33,7 @@
     <string name="text_user_abstract">摘要信息</string>
 
     <!-- 编辑资料(用户)界面text -->
-    <string name="text_choose">请选择</string>
+    <string name="text_choose">请点击选择</string>
     <string name="text_cancel">取消</string>
     <string name="text_done">完成</string>
     <string name="text_change_avatar">设置头像</string>
@@ -53,7 +51,7 @@
     <!-- 设置界面text -->
     <string name="text_setting">设置</string>
     <string name="text_account_and_security">账号与安全</string>
-
+    <string name="text_about">关于</string>
     <!-- 其他text -->
     <string name="text_not_logged_in">未登录</string>
     <string name="take_a_picture">拍照</string>
@@ -73,5 +71,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="title_activity_forget">ForgetActivity</string>
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="input_msg_code">请输入验证码</string>
+    <string name="text_input_mobile">填写手机号</string>
 
 </resources>

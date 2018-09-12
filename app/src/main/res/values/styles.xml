@@ -19,4 +19,9 @@
         <item name="tabSelectedTextColor">@color/colorYellowGreen</item>
         <item name="tabBackground">@color/colorWhite</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

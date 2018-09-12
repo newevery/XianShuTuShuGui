@@ -13,12 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,20 +32,25 @@ import java.util.ArrayList;
 
 import cn.com.sino_device.xianshutushugui.base.BaseActivity;
 import cn.com.sino_device.xianshutushugui.bean.user.GetUserInfo;
-import cn.com.sino_device.xianshutushugui.bean.user.Result;
 import cn.com.sino_device.xianshutushugui.bean.user.ResultGetUserInfo;
-import cn.com.sino_device.xianshutushugui.borrow.BorrowFragment;
-import cn.com.sino_device.xianshutushugui.collect.MyCollectFragment;
-import cn.com.sino_device.xianshutushugui.donate.DonateFragment;
-import cn.com.sino_device.xianshutushugui.giveback.GivebackFragment;
-import cn.com.sino_device.xianshutushugui.library.LibraryFragment;
+
+import cn.com.sino_device.xianshutushugui.book.AboutActivity;
+import cn.com.sino_device.xianshutushugui.book.BorrowFragment;
+import cn.com.sino_device.xianshutushugui.book.DepositActivity;
+import cn.com.sino_device.xianshutushugui.book.DonateFragment;
+import cn.com.sino_device.xianshutushugui.book.GivebackFragment;
+import cn.com.sino_device.xianshutushugui.book.LibraryFragment;
+import cn.com.sino_device.xianshutushugui.book.MyMsgActivity;
+import cn.com.sino_device.xianshutushugui.book.Result;
 import cn.com.sino_device.xianshutushugui.setting.SettingActivity;
-import cn.com.sino_device.xianshutushugui.test.TestActivity;
+import cn.com.sino_device.xianshutushugui.setting.mobile.MobileFragment;
+import cn.com.sino_device.xianshutushugui.setting.password.SecurityCheckFragment;
 import cn.com.sino_device.xianshutushugui.ui.BottomNavigationViewHelper;
 import cn.com.sino_device.xianshutushugui.ui.DisableScrollbleViewPager;
 import cn.com.sino_device.xianshutushugui.user.UserActivity;
 import cn.com.sino_device.xianshutushugui.user.userinfo.GetUserInfoContract;
 import cn.com.sino_device.xianshutushugui.user.userinfo.GetUserInfoPresenter;
+import cn.com.sino_device.xianshutushugui.util.ActivityUtils;
 import cn.com.sino_device.xianshutushugui.util.Base64BitmapUtil;
 import cn.com.sino_device.xianshutushugui.util.FileUtils;
 import cn.com.sino_device.xianshutushugui.util.SPUtils;
@@ -102,17 +105,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     // 捐书
                     viewPager.setCurrentItem(1);
                     return true;
+
                 case R.id.navigation_borrow:
-                    // 借书
-                    viewPager.setCurrentItem(2);
-                    return true;
-                case R.id.navigation_mycollect:
                     // 收藏
-                    viewPager.setCurrentItem(3);
+                    viewPager.setCurrentItem(2);
                     return true;
                 case R.id.navigation_giveback:
                     // 还书
-                    viewPager.setCurrentItem(4);
+                    viewPager.setCurrentItem(3);
                     return true;
                 default:
                     return false;
@@ -152,15 +152,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         BottomNavigationViewHelper.disableShiftMode(bottomNav);
         // 设置底部导航菜单监听
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         // 书库
         LibraryFragment libraryFragment = new LibraryFragment();
         // 捐书
         DonateFragment donateFragment = new DonateFragment();
-        // 借书
+        //借书
         BorrowFragment borrowFragment = new BorrowFragment();
-        //收藏
-        MyCollectFragment myCollectFragment=new MyCollectFragment();
         // 还书
         GivebackFragment givebackFragment = new GivebackFragment();
 
@@ -168,12 +165,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         fragments.add(libraryFragment);
         fragments.add(donateFragment);
         fragments.add(borrowFragment);
-        fragments.add(myCollectFragment);
         fragments.add(givebackFragment);
 
         pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(4);
 
         // 申请权限
         initPermission();
@@ -190,7 +186,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             mPresenter.getUserInfo(getUserInfo);
         } else {
             // 手机号登录
-            String mobile = SPUtils.get(this, "CURRENT_USER", "").toString();
+            String mobile = SPUtils.get(getApplicationContext(), "CURRENT_USER", "").toString();
             if (!"".equals(mobile)) {
                 getUserInfo.setMobile(mobile);
                 mPresenter.getUserInfo(getUserInfo);
@@ -198,19 +194,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.book_card) {
-
+            Intent intent = new Intent(MainActivity.this, MyMsgActivity.class);
+            startActivity(intent);
         } else if (id == R.id.setting) {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(intent);
         }
-
+        else if (id == R.id.mypay) {
+            Intent intent = new Intent(MainActivity.this, DepositActivity.class);
+            startActivity(intent);
+        }
+// else if (id == R.id.setPassword) {
+//            findViewById(R.id.contentFrame).setVisibility(View.VISIBLE);
+//            SecurityCheckFragment securityCheckFragment = new SecurityCheckFragment();
+////            getSupportFragmentManager().beginTransaction().add(R.id.contentFrame,securityCheckFragment);
+//            ActivityUtils.replaceFragmentIntoActivity(getSupportFragmentManager(), securityCheckFragment, R.id.contentFrame);
+//        }
+        else if (id == R.id.about) {
+            startActivity(new Intent(this, AboutActivity.class));
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -279,10 +286,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Gson gson = new Gson();
                 resultGetUserInfo = gson.fromJson(msg, ResultGetUserInfo.class);
 
-                // TODO
-                SPUtils.remove(this,"CURRENT_USERINFO");
-                SPUtils.put(this, "CURRENT_USERINFO", msg);
-                //
+                // TODO 自动登录
+//                SPUtils.put(getApplicationContext(), "ISLOGININ", true);
+
+                SPUtils.remove(getApplicationContext(), "CURRENT_USERINFO");
+                SPUtils.put(getApplicationContext(), "CURRENT_USERINFO", msg);
+
+                System.out.println(SPUtils.get(getApplicationContext(),"CURRENT_USER",""));
                 tvName.setText(resultGetUserInfo.getName());
                 if (!"".equals(resultGetUserInfo.getPhoto())) {
                     Bitmap bitmap = Base64BitmapUtil.base64ToBitmap(resultGetUserInfo.getPhoto());

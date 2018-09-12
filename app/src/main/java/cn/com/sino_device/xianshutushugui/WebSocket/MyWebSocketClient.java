@@ -5,9 +5,11 @@ import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -92,10 +94,10 @@ public class MyWebSocketClient extends WebSocketClient {
     }
 
 //
-//    public static void main(String[] args) throws URISyntaxException, InterruptedException {
+    public static void main(String[] args) throws URISyntaxException, InterruptedException {
 //        try {
-//            MyWebSocketClient c = new MyWebSocketClient(new URI("ws://192.168.2.121:8080/jeeplus/syslibSocketServer"), new Draft_17());
-//            if (c.connectBlocking()) {
+            MyWebSocketClient c = new MyWebSocketClient(new URI("ws://192.168.14.140:8080/jeeplus/syslibSocketServer"), new Draft_17());
+            if (c.connectBlocking()) {
 //                UserRegister mUserRegister = new UserRegister();
 //                mUserRegister.setName("张三");
 //                mUserRegister.setSex("男");
@@ -124,10 +126,10 @@ public class MyWebSocketClient extends WebSocketClient {
 //                StringBuffer sb = new StringBuffer();
 //                sb.append(msg1).insert(sb.indexOf("{") + 1, "methodName:'userRegister',");
 //                System.out.println(sb.toString());
-//                c.send(sb.toString());
+                c.send("{methodName:'getPhoneBooks',mobile:'18603195364',limit:'1'}");
 //                System.out.println("sssssss   " + msg);
-//            } else {
-//            }
+            } else {
+            }
 //
 //        } catch (URISyntaxException e) {
 //            System.out.println("请链接服务器");
@@ -139,7 +141,7 @@ public class MyWebSocketClient extends WebSocketClient {
 //            System.out.println("请链接服务器");
 //            e.printStackTrace();
 //        }
-//    }
+    }
 
 
 }

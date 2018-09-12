@@ -27,6 +27,14 @@ public class ActivityUtils {
         transaction.commit();
     }
 
+    public static void closeFragmentFromActivity(@NonNull FragmentManager fragmentManager,
+                                                   @NonNull Fragment fragment, int frameId) {
+        checkNotNull(fragmentManager);
+        checkNotNull(fragment);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.remove(fragment);
+        transaction.commit();
+    }
 
 
 }

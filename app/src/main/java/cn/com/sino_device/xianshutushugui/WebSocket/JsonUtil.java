@@ -39,6 +39,7 @@ public class JsonUtil {
     }
 
     public static String mapToJson(Map<String, String> map) {
+        System.out.println(map.toString());
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (Map.Entry<String, String> entry : map.entrySet()) {

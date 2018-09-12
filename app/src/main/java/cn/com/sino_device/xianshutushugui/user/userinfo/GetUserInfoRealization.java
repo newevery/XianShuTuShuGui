@@ -14,7 +14,7 @@ import java.net.URL;
 import cn.com.sino_device.xianshutushugui.WebSocket.CallBack;
 import cn.com.sino_device.xianshutushugui.WebSocket.WebSocketAsyncTask;
 import cn.com.sino_device.xianshutushugui.bean.user.GetUserInfo;
-import cn.com.sino_device.xianshutushugui.bean.user.Result;
+import cn.com.sino_device.xianshutushugui.book.Result;
 
 /**
  * Created by Android Studio.
